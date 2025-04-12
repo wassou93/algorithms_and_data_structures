@@ -24,6 +24,12 @@ struct linked_list *init_linked_list( ) {
 };
 
 int insert_at_head( struct linked_list *list, int value ) {
+    // The list could be empty but not unintialized
+    if ( list == NULL ) {
+        printf( "The list is not initialized.\n" );
+        return -1;
+    }
+
     struct node *new_node = ( struct node * )malloc( sizeof( struct node ) );
 
     if ( new_node == NULL ) {
@@ -47,6 +53,12 @@ int insert_at_head( struct linked_list *list, int value ) {
 }
 
 int insert_at_tail( struct linked_list *list, int value ) {
+    // The list could be empty but not unintialized
+    if ( list == NULL ) {
+        printf( "The list is not initialized.\n" );
+        return -1;
+    }
+
     struct node *new_node = ( struct node * )malloc( sizeof( struct node ) );
 
     if ( new_node == NULL ) {
@@ -133,7 +145,32 @@ int delete_from_head( struct linked_list *list ) {
     return 0;
 }
 
-void delete_from_tail( struct linked_list *list ) {
+int delete_from_tail( struct linked_list *list ) {
+    // The list could not be empty nor unintialized
+    if ( list == NULL || list->size == 0 ) {
+        printf( "The list is empty or not initialized.\n" );
+        return -1;
+    }
+
+    // Handle single node list
+    if ( list->size == 1 ) {
+        free( list->tail );
+        list->head = list->tail = NULL;
+    } else {
+        struct node *old_node = list->tail;
+
+        struct node *cursor = list->head;
+        while ( cursor->next != list->tail ) {
+            cursor = cursor->next;
+        }
+
+        cursor->next = NULL;
+        free( old_node );
+    }
+
+    list->size--;
+
+    return 0;
 }
 
 void delete_from_position( struct linked_list *list, int position ) {
