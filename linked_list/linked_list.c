@@ -313,6 +313,4 @@ int get_value( struct linked_list *list, int position ) {
     return -1;
 }
 
-int main( ) {
-}
 
