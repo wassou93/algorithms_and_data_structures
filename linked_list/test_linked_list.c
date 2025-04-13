@@ -66,9 +66,12 @@ void test_linked_list( ) {
     // Test Case 10: Handle operations on an empty list
     printf( "\nTest Case 10: Handle operations on an empty list\n" );
     delete_from_head( list );     // List: 10 -> 40
+    print_linked_list(list);
     delete_from_tail( list );     // List: 10
+    print_linked_list(list);
     delete_from_tail( list );     // List is now empty
-    print_linked_list( list );    // Should print "The list is empty or not initialized."
+    print_linked_list(list);
+    ////////
     delete_from_head( list );     // Should print error message
     delete_by_value( list, 10 );  // Should print error message
     search_by_value( list, 10 );  // Should print error message

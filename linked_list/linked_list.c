@@ -21,7 +21,7 @@ struct linked_list *init_linked_list( ) {
     ll->size               = 0;
 
     return ll;
-};
+}
 
 int insert_at_head( struct linked_list *list, int value ) {
     // The list could be empty but not unintialized
@@ -157,15 +157,14 @@ int delete_from_tail( struct linked_list *list ) {
         free( list->tail );
         list->head = list->tail = NULL;
     } else {
-        struct node *old_node = list->tail;
-
         struct node *cursor = list->head;
         while ( cursor->next != list->tail ) {
             cursor = cursor->next;
         }
 
+        free( list->tail );
         cursor->next = NULL;
-        free( old_node );
+        list->tail   = cursor;
     }
 
     list->size--;
@@ -312,5 +311,4 @@ int get_value( struct linked_list *list, int position ) {
     // This point should never be reached if the list and position are valid.
     return -1;
 }
-
 
