@@ -211,16 +211,106 @@ int delete_from_position( struct linked_list *list, int position ) {
     return 0;
 }
 
-void delete_by_value( struct linked_list *list, int value ) {
+int delete_by_value( struct linked_list *list, int value ) {
+    // The list could not be empty nor unintialized
+    if ( list == NULL || list->size == 0 ) {
+        printf( "The list is empty or not initialized.\n" );
+        return -1;
+    }
+
+    struct node *cursor      = list->head;
+    struct node *prev_cursor = NULL;
+
+    while ( cursor != NULL ) {
+        if ( cursor->value == value ) {
+            break;
+        }
+        prev_cursor = cursor;
+        cursor      = cursor->next;
+    }
+
+    if ( cursor == NULL ) {
+        printf( "The value is not found.\n" );
+        return -1;
+    }
+
+    // Handle deletion
+    if ( cursor == list->head ) {
+        return delete_from_head( list );
+    } else if ( cursor == list->tail ) {
+        return delete_from_tail( list );
+    } else {
+        prev_cursor->next = cursor->next;
+        free( cursor );
+        list->size--;
+    }
+
+    return 0;
 }
 
-void print_linked_list( struct linked_list *list ) {
+int print_linked_list( struct linked_list *list ) {
+    // The list could not be empty nor unintialized
+    if ( list == NULL || list->size == 0 ) {
+        printf( "The list is empty or not initialized.\n" );
+        return -1;
+    }
+
+    struct node *cursor = list->head;
+    while ( cursor != NULL ) {
+        printf( "Node: %d\n", cursor->value );
+        cursor = cursor->next;
+    }
+
+    return 0;
 }
 
-int search_by_value( struct linked_list *list ) {
+int search_by_value( struct linked_list *list, int value ) {
+    // The list could not be empty nor unintialized
+    if ( list == NULL || list->size == 0 ) {
+        printf( "The list is empty or not initialized.\n" );
+        return -1;
+    }
+
+    int position        = 0;
+    struct node *cursor = list->head;
+    while ( cursor != NULL ) {
+        if ( cursor->value == value ) {
+            return position;
+        }
+        position++;
+        cursor = cursor->next;
+    }
+
+    printf( "The value %d is not found in the list.\n", value );
+    return -1;
 }
 
-int get_value( struct linked_list *list ) {
+int get_value( struct linked_list *list, int position ) {
+    // The list could not be empty nor unintialized
+    if ( list == NULL || list->size == 0 ) {
+        printf( "The list is empty or not initialized.\n" );
+        return -1;
+    }
+
+    // The position needs to be valid for read
+    if ( position < 0 || position >= list->size ) {
+        printf( "The position entered is invalid for read.\n" );
+        return -1;
+    }
+
+    int counter         = 0;
+    struct node *cursor = list->head;
+    while ( cursor != NULL ) {
+        if ( counter == position ) {
+            printf( "Value at position %d is %d.\n", position, cursor->value );
+            return cursor->value;
+        }
+        counter++;
+        cursor = cursor->next;
+    }
+
+    // This point should never be reached if the list and position are valid.
+    return -1;
 }
 
 int main( ) {
