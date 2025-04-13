@@ -89,7 +89,7 @@ int insert_at_position( struct linked_list *list, int value, int position ) {
     }
 
     if ( position < 0 || position > list->size ) {
-        printf( "The position entered is invalid.\n" );
+        printf( "The position entered is invalid for insertion.\n" );
         return -1;
     }
 
@@ -173,7 +173,42 @@ int delete_from_tail( struct linked_list *list ) {
     return 0;
 }
 
-void delete_from_position( struct linked_list *list, int position ) {
+int delete_from_position( struct linked_list *list, int position ) {
+    // The list could not be empty nor unintialized
+    if ( list == NULL || list->size == 0 ) {
+        printf( "The list is empty or not initialized.\n" );
+        return -1;
+    }
+
+    // The position needs to be valid for deletion
+    if ( position < 0 || position >= list->size ) {
+        printf( "The position entered is invalid for deletion.\n" );
+        return -1;
+    }
+
+    if ( position == 0 ) {
+        return delete_from_head( list );
+    }
+
+    if ( position == list->size - 1 ) {
+        return delete_from_tail( list );
+    }
+
+    int counter         = 0;
+    struct node *cursor = list->head;
+
+    while ( counter < position - 1 ) {
+        cursor = cursor->next;
+        counter++;
+    }
+
+    // Now we are in the node just before the one to be deleted
+    struct node *old_node = cursor->next;
+    cursor->next          = cursor->next->next;
+    free( old_node );
+    list->size--;
+
+    return 0;
 }
 
 void delete_by_value( struct linked_list *list, int value ) {
